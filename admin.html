@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cook for the Code · Admin</title>
+<style>
+:root{--bg:#171717;--surf:#1f1e1d;--surf2:#262322;--wine:#873D36;--wine-h:#9A4840;--cu:#B27A4C;--cu-h:#C98E5E;--iv:#E9E0D2;--tp:#A69A8B;--ln:#403632;--ok:#9DB58B;--bad:#D98479;
+--serif:"Playfair Display","Bodoni 72",Didot,"Iowan Old Style","Palatino Linotype",Georgia,serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--iv);font:14.5px/1.5 var(--sans);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);margin:0;font-weight:700}
+h2{font-size:1.2rem}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cu-h);outline-offset:2px}
+[hidden]{display:none!important}
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-.14em;flex:none}
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 28px;background:rgba(23,23,23,.96);border-bottom:1px solid var(--ln);backdrop-filter:blur(10px)}
+.bar .ico{font-size:1.6rem;color:var(--cu)}
+.bar b{font:700 1.15rem var(--serif)}
+.bar .tag{padding:2px 10px;border-radius:4px;border:1px solid var(--cu);color:var(--cu-h);font-size:.76rem;font-weight:600}
+.bar .sp{flex:1}
+main{max-width:1260px;margin:0 auto;padding:24px 24px 60px}
+.card{background:var(--surf);border:1px solid var(--ln);border-radius:8px;padding:20px;margin:0 0 18px}
+.card>.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.card .sub{color:var(--tp);font-size:.86rem;margin:2px 0 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+.kpi{position:relative;display:flex;align-items:center;gap:16px;margin:0;padding:18px 20px}
+.kpi::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 2px 2px 0;background:var(--c)}
+.kpi .ico{font-size:1.7rem;color:var(--c)}
+.kpi small{display:block;color:var(--tp);font-size:.82rem}
+.stat{font:700 2rem/1.1 var(--serif)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.two>.card{min-width:0}
+.btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;padding:9px 18px;border-radius:6px;color:var(--iv);background:var(--wine);border:1px solid #a1534b;transition:background .2s,border-color .2s}
+.btn:hover{background:var(--wine-h)}
+.btn.alt{background:transparent;border-color:var(--ln)}.btn.alt:hover{border-color:var(--cu);color:var(--cu-h)}
+.btn.go{background:var(--cu);border-color:var(--cu-h);color:#171717}.btn.go:hover{background:var(--cu-h)}
+.btn.dark{background:var(--surf2);border-color:var(--ln)}.btn.dark:hover{border-color:var(--wine)}
+.btn.sm{padding:5px 11px;font-size:.8rem}
+.btn.del{background:transparent;color:var(--bad);border-color:#5b3732}.btn.del:hover{background:var(--wine);color:var(--iv);border-color:#a1534b}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input{padding:10px 13px;border-radius:6px;border:1px solid var(--ln);background:var(--bg);width:100%;transition:border-color .2s,box-shadow .2s}
+input::placeholder{color:#6f655b}
+input:focus{outline:0;border-color:var(--cu);box-shadow:0 0 0 3px rgba(178,122,76,.2)}
+label{display:block;font-size:.82rem;font-weight:500;color:var(--tp)}
+label input{margin-top:5px;font-size:.95rem;color:var(--iv)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:3px 10px;border-radius:4px;font-size:.78rem;font-weight:600;background:var(--bg);border:1px solid var(--ln);color:var(--tp)}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--bad)}.pill.gold{color:var(--cu-h)}
+.pill.live::before{animation:ping 1.8s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 currentColor}80%,100%{box-shadow:0 0 0 7px transparent}}
+.scroll{overflow:auto;border-radius:6px;border:1px solid var(--ln);max-height:520px}
+table{width:100%;border-collapse:collapse;background:var(--surf)}
+th{position:sticky;top:0;z-index:1;background:var(--surf2);font-size:.8rem;font-weight:500;color:var(--tp);text-align:left;padding:10px 14px;white-space:nowrap;border-bottom:1px solid var(--ln)}
+td{padding:11px 14px;border-top:1px solid var(--ln);vertical-align:middle}
+tbody tr:first-child td{border-top:0}
+tbody tr{transition:background .15s}tbody tr:hover{background:rgba(178,122,76,.07)}
+td small{color:var(--tp)}
+.empty{text-align:center;color:var(--tp);padding:26px}
+.dots{display:flex;gap:5px;margin-bottom:5px}.dots i{width:18px;height:4px;background:var(--ln)}.dots i.on{background:var(--cu)}
+.row-act{display:flex;flex-wrap:wrap;gap:6px}
+.muted{color:var(--tp)}.error{color:var(--bad);font-weight:600}.ok{color:var(--ok);font-weight:600}
+.search{max-width:240px}
+.lg{min-height:calc(100vh - 62px);display:grid;place-items:center;padding:20px;background:radial-gradient(700px 380px at 50% 0,rgba(135,61,54,.15),transparent 70%)}
+.lg .card{width:100%;max-width:420px;padding:32px;margin:0}
+.lg h2{font-size:1.6rem}.lg .btn{width:100%;justify-content:center;padding:12px;margin-top:18px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+@media(max-width:560px){main{padding:14px 12px 40px}.bar{padding:10px 14px}.grid{grid-template-columns:1fr 1fr;gap:10px}.kpi{padding:14px;gap:10px}.stat{font-size:1.6rem}.card{padding:16px}.search{max-width:none;width:100%}.bar .tag{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6a6561"/><stop offset=".45" stop-color="#2d2a28"/><stop offset="1" stop-color="#454140"/></linearGradient>
+<linearGradient id="gm2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4643"/><stop offset="1" stop-color="#1f1d1c"/></linearGradient>
+<linearGradient id="gc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9a273"/><stop offset=".5" stop-color="#b27a4c"/><stop offset="1" stop-color="#7a4f2c"/></linearGradient>
+<linearGradient id="gh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d9d1c4"/></linearGradient>
+<filter id="eg" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.6"/></filter>
+<symbol id="i-hat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15v4.5h10V15"/><path d="M7 15c-3 0-4.2-3.6-1.6-5.1C5 7 8 5 10 6.5c1-2 4-2 4.5 0C17 5.5 19.6 8 18.6 10.2 21 11.5 19.5 15 17 15z"/></g></symbol>
+<symbol id="i-pot" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h14v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M3 10h18M2 13h3M19 13h3M9 6c0-1.5 1.5-1.5 1.5-3M14 6c0-1.5 1.5-1.5 1.5-3"/></g></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 8.5V13l3 2M9.5 2.5h5"/></g></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9.5" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></symbol>
+<symbol id="i-spoon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><ellipse cx="12" cy="7.5" rx="3.5" ry="4.5"/><path d="M12 12v9"/></g></symbol>
+<symbol id="i-jar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.5h8v3H8zM7 6.5h10v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1z"/><path d="M10 12h4M10 16h4"/></g></symbol>
+<symbol id="i-scroll" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></g></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="M4 19h16M4 19L3 8l5 4 4-7 4 7 5-4-1 11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-tomato" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 6c-1.5 1-3 1-4.5.5M12 6c1.5 1 3 1 4.5.5M12 6V3.5"/></g></symbol>
+<symbol id="i-cheese" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15l10-9 8 3v10H3z"/><path d="M3 15h18"/><circle cx="9" cy="18" r=".7"/><circle cx="15" cy="18" r=".7"/></g></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19C5 10 10 5 20 4c0 10-5 15-15 15z"/><path d="M5 19l8-8"/></g></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+<symbol id="i-truffle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 14c0-4 3-8 7.5-8s7.5 4 7.5 8-3 6-7.5 6S4.5 18 4.5 14z"/><path d="M9 12l1 1M13.5 11l1 1M11 16l1 1M15.5 15l1 1"/></g></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8M9 18h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-teams" viewBox="0 0 24 24"><path d="M9 11.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c0-4 3-6 6.5-6s6.5 2 6.5 6M16.5 5a3.5 3.5 0 0 1 0 7M21.5 20c0-3-1.5-5-4-5.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2 4 2 4H5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<header class="bar"><svg class="ico"><use href="#i-hat"/></svg><b>Cook for the Code</b><span class="tag">Admin</span><span class="sp"></span><button id="outbtn" class="btn alt sm" onclick="logout()" hidden>Sign out</button></header>
+<section id="login" class="lg">
+ <div class="card"><h2>Administrator sign in</h2><p class="sub">Manage teams, the event and scores.</p>
+  <label style="margin-top:14px">Username<input id="uid" value="admin" placeholder="Username" autocomplete="username"></label>
+  <label style="margin-top:12px">Password<input id="pw" type="password" placeholder="Admin password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></label>
+  <button class="btn" onclick="login()">Sign in</button><p id="loginmsg" class="error"></p></div>
+</section>
+<main id="panel" hidden>
+ <div class="grid">
+  <div class="card kpi" style="--c:var(--cu)"><svg class="ico"><use href="#i-teams"/></svg><div><small>Teams</small><div id="teamsCount" class="stat">—</div></div></div>
+  <div class="card kpi" style="--c:var(--ok)"><svg class="ico"><use href="#i-pulse"/></svg><div><small>Playing</small><div id="activeCount" class="stat">—</div></div></div>
+  <div class="card kpi" style="--c:var(--bad)"><svg class="ico"><use href="#i-pause"/></svg><div><small>Paused</small><div id="pausedCount" class="stat">—</div></div></div>
+  <div class="card kpi" style="--c:var(--iv)"><svg class="ico"><use href="#i-flag"/></svg><div><small>Finished</small><div id="doneCount" class="stat">—</div></div></div>
+ </div>
+ <div class="two">
+  <div class="card"><div class="hd"><div><h2>Event controls</h2><p class="sub">Start or end the competition for every team.</p></div><span id="evpill" class="pill">…</span></div>
+   <div class="actions"><button class="btn go" onclick="eventAction('start')">Start event</button><button class="btn dark" onclick="eventAction('end')">End event</button><button class="btn alt" onclick="refresh()">Refresh data</button><button class="btn alt" onclick="downloadCsv()">Export CSV</button></div><p id="eventmsg" class="muted"></p></div>
+  <div class="card"><div class="hd"><div><h2>Create team</h2><p class="sub">Password needs 6+ characters.</p></div></div>
+   <div class="form"><label>Team ID<input id="newid" placeholder="Team ID"></label><label>Team name<input id="newname" placeholder="Team name"></label><label>Participant 1<input id="m1" placeholder="Participant 1"></label><label>Participant 2<input id="m2" placeholder="Participant 2"></label><label>Password<input id="newpw" type="password" placeholder="Team password (6+ chars)"></label><button class="btn" onclick="createTeam()">Create team</button></div><p id="createmsg"></p></div>
+ </div>
+ <div class="card"><div class="hd"><div><h2>Teams</h2><p class="sub">Dots show the five levels each team has submitted.</p></div><input id="q" class="search" placeholder="Filter teams…" oninput="renderTeams()"></div>
+  <div class="scroll"><table><thead><tr><th>Team</th><th>Members</th><th>Unlocked</th><th>Scores</th><th>Status</th><th>Actions</th></tr></thead><tbody id="teamrows"><tr><td colspan="6" class="empty">Loading teams…</td></tr></tbody></table></div></div>
+ <div class="two">
+  <div class="card"><div class="hd"><div><h2>Security log</h2><p class="sub">Fullscreen exits, tab switches and more.</p></div><button class="btn alt sm" onclick="loadLogs()">Load logs</button></div>
+   <div class="scroll"><table><thead><tr><th>Time</th><th>Team</th><th>Event</th></tr></thead><tbody id="logs"><tr><td colspan="3" class="empty">Press “Load logs”.</td></tr></tbody></table></div></div>
+  <div class="card"><div class="hd"><div><h2>Recent submissions</h2><p class="sub">Latest scored answers.</p></div><button class="btn alt sm" onclick="loadSubs()">Load submissions</button></div>
+   <div class="scroll"><table><thead><tr><th>Time</th><th>Team</th><th>Level</th><th>Score</th></tr></thead><tbody id="subs"><tr><td colspan="4" class="empty">Press “Load submissions”.</td></tr></tbody></table></div></div>
+ </div>
+</main>
+<script>
+let token=localStorage.getItem('cfcAdminToken')||'',TEAMS=[];const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function api(path,opts={}){const r=await fetch('/api'+path,{...opts,headers:{'Content-Type':'application/json',Authorization:token,...opts.headers},body:opts.body?JSON.stringify(opts.body):undefined});const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.detail||'Request failed');return data}
+async function login(){try{const x=await api('/admin/login',{method:'POST',body:{id:$('#uid').value.trim(),password:$('#pw').value}});token=x.token;localStorage.setItem('cfcAdminToken',token);show();await refresh()}catch(e){$('#loginmsg').textContent=e.message}}
+function show(){$('#login').hidden=!!token;$('#panel').hidden=!token;$('#outbtn').hidden=!token}
+function logout(){token='';localStorage.removeItem('cfcAdminToken');show()}
+async function refresh(){try{const [o,teams]=await Promise.all([api('/admin/overview'),api('/admin/teams')]);$('#teamsCount').textContent=o.teams;$('#activeCount').textContent=o.active;$('#pausedCount').textContent=o.paused;$('#doneCount').textContent=o.completed;
+ $('#eventmsg').textContent=o.event_active?'Event is ACTIVE':'Event is NOT started';const p=$('#evpill');p.textContent=o.event_active?'Live':'Not started';p.className='pill '+(o.event_active?'ok live':'gold');TEAMS=teams;renderTeams()}catch(e){$('#eventmsg').textContent=e.message;if(e.message.includes('signed'))logout()}}
+function renderTeams(){const f=($('#q').value||'').trim().toLowerCase(),rows=TEAMS.filter(t=>!f||(t.name+' '+t.team_id+' '+(t.members||[]).join(' ')).toLowerCase().includes(f));
+ $('#teamrows').innerHTML=rows.map(t=>{const sc=t.scores||{},st=t.paused?['Paused','warn']:Object.keys(t.level_started||{}).length?['Active','ok']:['Waiting','gold'];
+  return `<tr><td><b>${esc(t.name)}</b><br><small>${esc(t.team_id)}</small></td><td>${(t.members||[]).map(esc).join('<br>')}</td><td>${t.unlocked}/5</td>
+  <td><div class="dots">${[1,2,3,4,5].map(i=>`<i class="${sc[i]!==undefined?'on':''}"></i>`).join('')}</div><small>${Object.entries(sc).map(([k,v])=>`L${k}: ${v}`).join(' · ')||'—'}</small></td>
+  <td><span class="pill ${st[1]}">${st[0]}</span></td>
+  <td><div class="row-act"><button class="btn alt sm" onclick="act('${esc(t.team_id)}','pause/${t.paused?0:1}')">${t.paused?'Resume':'Pause'}</button><button class="btn alt sm" onclick="act('${esc(t.team_id)}','unlock')">Unlock next</button><button class="btn alt sm" onclick="resetTeam('${esc(t.team_id)}')">Reset</button><button class="btn del sm" onclick="deleteTeam('${esc(t.team_id)}')">Delete</button></div></td></tr>`}).join('')||'<tr><td colspan="6" class="empty">No teams found.</td></tr>'}
+async function act(id,action){try{await api(`/admin/teams/${encodeURIComponent(id)}/${action}`,{method:'POST'});await refresh()}catch(e){alert(e.message)}}
+async function resetTeam(id){if(!confirm(`Reset all progress for ${id}?`))return;try{await api(`/admin/teams/${encodeURIComponent(id)}/reset`,{method:'POST'});await refresh()}catch(e){alert(e.message)}}
+async function deleteTeam(id){if(!confirm(`Delete ${id}?`))return;try{await api(`/admin/teams/${encodeURIComponent(id)}`,{method:'DELETE'});await refresh()}catch(e){alert(e.message)}}
+async function createTeam(){try{const r=await api('/admin/teams',{method:'POST',body:{team_id:$('#newid').value,name:$('#newname').value,members:[$('#m1').value,$('#m2').value],password:$('#newpw').value}});$('#createmsg').textContent=`Created ${r.team_id}`;$('#createmsg').className='ok';await refresh()}catch(e){$('#createmsg').textContent=e.message;$('#createmsg').className='error'}}
+async function eventAction(a){if(!confirm(`${a.toUpperCase()} the event?`))return;try{await api(`/admin/event/${a}`,{method:'POST'});await refresh()}catch(e){alert(e.message)}}
+async function downloadCsv(){try{const r=await fetch('/api/admin/export.csv',{headers:{Authorization:token}});if(!r.ok)throw Error('CSV export failed');const blob=await r.blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='cfc-scores.csv';a.click();URL.revokeObjectURL(url)}catch(e){alert(e.message)}}
+async function loadLogs(){try{const rows=await api('/admin/security-logs');$('#logs').innerHTML=rows.map(x=>`<tr><td>${new Date(x.at*1000).toLocaleString()}</td><td>${esc(x.team_id)}</td><td><span class="pill warn">${esc(x.kind)}</span></td></tr>`).join('')||'<tr><td colspan="3" class="empty">No security events.</td></tr>'}catch(e){alert(e.message)}}
+async function loadSubs(){try{const rows=await api('/admin/submissions');$('#subs').innerHTML=rows.map(x=>`<tr><td>${new Date(x.at*1000).toLocaleString()}</td><td>${esc(x.team_id)}</td><td>${x.level}</td><td><b>${x.score}</b></td></tr>`).join('')||'<tr><td colspan="4" class="empty">No submissions yet.</td></tr>'}catch(e){alert(e.message)}}
+show();if(token)refresh();setInterval(()=>{if(token&&!$('#panel').hidden)refresh()},10000);
+</script></body></html>
